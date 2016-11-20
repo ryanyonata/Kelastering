@@ -1,4 +1,4 @@
-package myid3andc45classifier.Model;
+package kelastering.Model;
 
 import weka.classifiers.Classifier;
 import weka.classifiers.Evaluation;

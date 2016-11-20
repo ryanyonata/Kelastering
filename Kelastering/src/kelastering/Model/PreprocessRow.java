@@ -1,4 +1,4 @@
-package myid3andc45classifier.Model;
+package kelastering.Model;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;

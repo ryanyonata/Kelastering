@@ -4,14 +4,15 @@
  * and open the template in the editor.
  */
 
-package myid3andc45classifier;
+package kelastering;
 
-import myid3andc45classifier.Model.MyC45;
-import myid3andc45classifier.Model.MyID3;
-import myid3andc45classifier.Model.WekaAccessor;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import kelastering.Model.WekaAccessor;
 import weka.classifiers.Classifier;
 import weka.classifiers.Evaluation;
 import weka.classifiers.trees.J48;
+import weka.clusterers.*;
 import weka.core.Instances;
 
 /**
@@ -27,34 +28,23 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws Exception {
-        // TODO code application logic here
-        WekaAccessor accessor = new WekaAccessor();
+        
+        //WekaAccessor accessor = new WekaAccessor();
         Instances trainset;
-        trainset = accessor.readARFF("C:\\Users\\User\\Documents\\Tugas\\myID3andC45classifier\\myID3andC45classifier\\resources\\iris.arff");
-        Classifier j48 = new J48();
-        Classifier model = accessor.train(trainset, j48);
-        //accessor.saveModel(model, "C:\\Users\\Julio Savigny\\Desktop\\myID3andC45classifier\\myID3andC45classifier\\some.model");
-        //Classifier loadedModel = accessor.loadModel("C:\\Users\\Julio Savigny\\Desktop\\myID3andC45classifier\\myID3andC45classifier\\some.model");
-        System.out.println(model);
-        //System.out.println(loadedModel);
+        ClusterEvaluation eval;
+        String path = "D:\\Kuliah\\Semester VII\\ML\\Kelastering\\Kelastering\\resources\\weather.nominal.arff";
+        BufferedReader data = new BufferedReader(new FileReader(path));
+        trainset = new Instances(data);
+        SimpleKMeans wekaKmeans = new SimpleKMeans();
+        wekaKmeans.setSeed(3);
+        wekaKmeans.setPreserveInstancesOrder(true);
+        wekaKmeans.setNumClusters(2);
+        wekaKmeans.buildClusterer(trainset);
+        eval = new ClusterEvaluation();
+        eval.setClusterer(wekaKmeans);
+        eval.evaluateClusterer(trainset);
 
-        // Coba ID3 Apoy
-        Classifier customID3 = new MyC45();
-        Classifier myId3Model = accessor.train(trainset, customID3);
-        Instances resampledTrainset = accessor.resample(trainset);
-        System.out.println("WOY");
-        System.out.println(myId3Model);
-        System.out.println(accessor.tenFoldCrossValidation(trainset, customID3).toSummaryString());
-        Evaluation eval = new Evaluation(trainset);
-        eval.evaluateModel(myId3Model, trainset);
-        //System.out.println(eval.toSummaryString());
-
-//        System.out.println(trainset);
-//        System.out.println(resampledTrainset);
-
-        // Coba C4.5 Bayu
-//        Classifier customC45 = new myC45();
-//        Classifier myC45Model = accessor.train(trainset, customC45);
-//        System.out.println(myC45Model);
+        System.out.println("Cluster Evaluation: "+eval.clusterResultsToString());
+       
     }
 }

@@ -1,4 +1,4 @@
-package myid3andc45classifier.Model;
+package kelastering.Model;
 
 /**
  * Created by Julio Savigny on 10/6/2016.

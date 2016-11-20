@@ -5,7 +5,10 @@
  */
 package kelastering;
 
+import java.util.ArrayList;
 import weka.clusterers.AbstractClusterer;
+import weka.core.EuclideanDistance;
+import weka.core.Instance;
 import weka.core.Instances;
 
 /**
@@ -15,15 +18,18 @@ import weka.core.Instances;
 public class MyAgnes extends AbstractClusterer {
     
     final static int SINGLE = 0;
-    final static int COMPLETE = 0;
+    final static int COMPLETE = 1;
     
     Instances m_instances;
     int m_clusters = 2;
     int m_linkType = SINGLE;
+    ArrayList<ArrayList<Double>> distanceMatrix = new ArrayList<>();
+    EuclideanDistance distance;
 
-    public void AbstractClusterer (int clusters, int linkType) {
+    public MyAgnes (int clusters, int linkType, Instances data) throws Exception {
         m_clusters = clusters;
         m_linkType = linkType;
+        buildClusterer(data);
     }
     
     @Override
@@ -33,6 +39,8 @@ public class MyAgnes extends AbstractClusterer {
 
     @Override
     public int numberOfClusters() throws Exception {
+        
+        
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
