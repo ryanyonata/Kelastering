@@ -24,7 +24,7 @@ public class MyAgnes extends AbstractClusterer {
     int m_clusters = 2;
     int m_linkType = SINGLE;
     ArrayList<ArrayList<Double>> distanceMatrix = new ArrayList<>();
-    EuclideanDistance distance;
+    EuclideanDistance distanceCounter;
 
     public MyAgnes (int clusters, int linkType, Instances data) throws Exception {
         m_clusters = clusters;
@@ -42,6 +42,60 @@ public class MyAgnes extends AbstractClusterer {
         
         
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    public double findClosestDistance(ArrayList<Instance> cluster1, ArrayList<Instance> cluster2) {
+        ArrayList<Double> calculatedDistances = new ArrayList<>();
+        
+        for (Instance a : cluster1) {
+            for (Instance b: cluster2) {
+                calculatedDistances.add(distanceCounter.distance(a,b));
+            }
+        }
+        
+        double min = calculatedDistances.get(0);
+        for (Double i : calculatedDistances) {
+            if (i < min) {
+                min = i;
+            }
+        }
+        
+        return min;
+    }
+    
+    public double findFurthestDistance(ArrayList<Instance> cluster1, ArrayList<Instance> cluster2) {
+        ArrayList<Double> calculatedDistances = new ArrayList<>();
+        
+        for (Instance a : cluster1) {
+            for (Instance b: cluster2) {
+                calculatedDistances.add(distanceCounter.distance(a,b));
+            }
+        }
+        
+        double max = calculatedDistances.get(0);
+        for (Double i : calculatedDistances) {
+            if (i > max) {
+                max = i;
+            }
+        }
+        
+        return max;
+    }
+    
+    public void updateDistanceMatrix(ArrayList<ArrayList<Instance>> clusters) {
+        distanceMatrix.clear();
+        
+        for (int i = 0; i < clusters.size()-1; i++) {
+            for (int j = i+1; j < clusters.size(); j++) {
+                double newDistance;
+                if (m_linkType == 0) {
+                    newDistance = findClosestDistance(clusters.get(i),clusters.get(j));
+                } else {
+                    newDistance = findFurthestDistance(clusters.get(i),clusters.get(j));
+                } 
+                distanceMatrix.get(i).set(j,newDistance);
+            }
+        }
     }
     
 }

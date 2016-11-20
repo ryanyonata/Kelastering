@@ -43,6 +43,15 @@ public class Main {
         eval = new ClusterEvaluation();
         eval.setClusterer(wekaKmeans);
         eval.evaluateClusterer(trainset);
+        
+        /*
+        HierarchicalClusterer wekaAgnes = new HierarchicalClusterer();
+        wekaAgnes.setNumClusters(2);
+        wekaAgnes.buildClusterer(trainset);
+        eval = new ClusterEvaluation();
+        eval.setClusterer(wekaAgnes);
+        eval.evaluateClusterer(trainset);
+        */
 
         System.out.println("Cluster Evaluation: "+eval.clusterResultsToString());
        
