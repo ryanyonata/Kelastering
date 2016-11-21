@@ -6,6 +6,7 @@
 package kelastering;
 
 import java.util.ArrayList;
+import java.util.Vector;
 import weka.clusterers.AbstractClusterer;
 import weka.core.EuclideanDistance;
 import weka.core.Instance;
@@ -33,15 +34,31 @@ public class MyAgnes extends AbstractClusterer {
     }
     
     @Override
-    public void buildClusterer(Instances i) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void buildClusterer(Instances data) throws Exception {
+        m_instances = data;
+        int nInstances = m_instances.numInstances();
+        if (nInstances == 0)
+            return;
+        Vector<Integer> [] clusterID = new Vector[m_instances.numInstances()];
+        for (int i = 0; i < nInstances; i++) {
+            clusterID[i] = new Vector<Integer>();
+            clusterID[i].add(i);
+        }
+        while (nInstances > m_clusters) {
+            for (int i = 0; i < clusterID.length-1; i++) {
+                for (int j = i+1; j < clusterID.length; j++) {
+                    //TODO: find closest clusters
+                }
+            }
+            //ato gimana caranya make fungsi yg udah dibuat. hahahah
+            //TODO: combine closest pair
+        }
     }
 
     @Override
     public int numberOfClusters() throws Exception {
         
-        
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return Math.min(m_clusters, m_instances.numInstances());
     }
     
     public double findClosestDistance(ArrayList<Instance> cluster1, ArrayList<Instance> cluster2) {
