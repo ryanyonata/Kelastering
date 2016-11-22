@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Vector;
 import weka.clusterers.AbstractClusterer;
+import weka.core.DistanceFunction;
 import weka.core.EuclideanDistance;
 import weka.core.Instance;
 import weka.core.Instances;
@@ -28,31 +29,52 @@ public class MyAgnes extends AbstractClusterer {
     HashMap<ArrayList<Integer>,Double> distanceMatrix = new HashMap<>();
     int[] clusters;
     ArrayList<ArrayList<Integer>> clusterID = new ArrayList<>();
-    EuclideanDistance m_DistanceFunction;
+    protected DistanceFunction m_DistanceFunction = new EuclideanDistance();
     //TO DO: Struktur data untuk hirarki
 
-    public MyAgnes (int clusters, int linkType, Instances data) throws Exception {
-        m_clusters = clusters;
-        m_linkType = linkType;
-        buildClusterer(data);
+    public MyAgnes () throws Exception {
+        m_clusters = 2;
+        m_linkType = SINGLE;
     }
+    
+    public void setNumClusters(int n) throws Exception {
+        if (n <= 0) {
+            throw new Exception("Number of clusters must be > 0");
+        }
+        m_clusters = n;
+    }
+    
+    public void setLinkType(int n) throws Exception {
+        if ((n != SINGLE) && (n != COMPLETE)) {
+            throw new Exception("Wrong link type");
+        }
+        m_linkType = n;
+    }
+    
     
     @Override
     public void buildClusterer(Instances data) throws Exception {
         m_instances = data;
         int nInstances = m_instances.numInstances();
-        if (nInstances == 0)
-            return;
+        
+        if(m_instances.numInstances() == 0){
+            throw new RuntimeException("The dataset should not be empty");
+        }
+        if(m_clusters == 0){
+            throw new RuntimeException("Number of clusters must be > 0");
+        }
         
         for (int i = 0; i < nInstances; i++) {
-            clusterID.add(i, new ArrayList<Integer>());
+            clusterID.add(new ArrayList<Integer>());
+            clusterID.get(i).add(i);
         }
-
+        
+        m_DistanceFunction.setInstances(m_instances);
         int idi, idj;
         double min, temp;
         while (nInstances > m_clusters) {
             System.out.println("Iterasi: " + nInstances);
-            min = 0;
+            min = Double.MAX_VALUE;
             idi = -1;
             idj = -1;
             for (int i = 0; i < clusterID.size()-1; i++) {
@@ -74,6 +96,8 @@ public class MyAgnes extends AbstractClusterer {
                         temp = findFurthestDistance(clusterID.get(i), clusterID.get(j));
                     }
                     
+                    System.out.println("Min: " + min + " temp: " + temp);
+                    
                     if (temp < min) {
                         min = temp;
                         idi = i;
@@ -82,6 +106,7 @@ public class MyAgnes extends AbstractClusterer {
                 }
             }
             //TODO: combine closest pair
+            System.out.println("idi: " + idi + " idj: " + idj);
             if (idi > -1) {
                 for (int i = 0; i < clusterID.get(idj).size(); i++) {
                     clusterID.get(idi).add(clusterID.get(idj).get(i));
@@ -117,6 +142,7 @@ public class MyAgnes extends AbstractClusterer {
         
         for (Integer a : cluster1) {
             for (Integer b: cluster2) {
+                //System.out.println("Dist: " + m_DistanceFunction.distance(m_instances.instance(a),m_instances.instance(b)));
                 calculatedDistances.add(m_DistanceFunction.distance(m_instances.instance(a),m_instances.instance(b)));
             }
         }

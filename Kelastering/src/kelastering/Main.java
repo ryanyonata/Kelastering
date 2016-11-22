@@ -8,6 +8,7 @@ package kelastering;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.util.Scanner;
 import kelastering.Model.WekaAccessor;
 import weka.classifiers.Classifier;
 import weka.classifiers.Evaluation;
@@ -23,23 +24,26 @@ public class Main {
     
     public Instances dataset;
     public Instances testset;
-
+    
+    final static int SINGLE = 0;
+    final static int COMPLETE = 1;
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) throws Exception {
-        
-        //WekaAccessor accessor = new WekaAccessor();
+        Scanner sc = new Scanner(System.in);
         Instances trainset;
         ClusterEvaluation eval;
         String path = "D:\\Kuliah\\Semester VII\\ML\\Kelastering\\Kelastering\\resources\\weather.nominal.arff";
         BufferedReader data = new BufferedReader(new FileReader(path));
         trainset = new Instances(data);
-        MyAgnes wekaKmeans = new MyAgnes(2,0,trainset);
+        MyAgnes wekaKmeans = new MyAgnes();
         //wekaKmeans.setSeed(3);
         //wekaKmeans.setPreserveInstancesOrder(true);
-        //wekaKmeans.setNumClusters(2);
-        //wekaKmeans.buildClusterer(trainset);
+        wekaKmeans.setNumClusters(2);
+        wekaKmeans.setLinkType(COMPLETE);
+        wekaKmeans.buildClusterer(trainset);
+        wekaKmeans.print();
         //eval = new ClusterEvaluation();
         //eval.setClusterer(wekaKmeans);
         //eval.evaluateClusterer(trainset);
