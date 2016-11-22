@@ -29,6 +29,7 @@ public class MyAgnes extends AbstractClusterer {
     HashMap<ArrayList<Integer>,Double> distanceMatrix = new HashMap<>();
     int[] clusters;
     ArrayList<ArrayList<Integer>> clusterID = new ArrayList<>();
+    ArrayList<ArrayList<ArrayList<Integer>>> hierarchy = new ArrayList<>();
     protected DistanceFunction m_DistanceFunction = new EuclideanDistance();
     //TO DO: Struktur data untuk hirarki
 
@@ -63,17 +64,19 @@ public class MyAgnes extends AbstractClusterer {
         if(m_clusters == 0){
             throw new RuntimeException("Number of clusters must be > 0");
         }
-        
+        hierarchy.add(new ArrayList<ArrayList<Integer>>());
         for (int i = 0; i < nInstances; i++) {
             clusterID.add(new ArrayList<Integer>());
             clusterID.get(i).add(i);
+            hierarchy.get(0).add(new ArrayList<Integer>());
+            hierarchy.get(0).get(i).add(i);
         }
         
         m_DistanceFunction.setInstances(m_instances);
         int idi, idj;
         double min, temp;
         while (nInstances > m_clusters) {
-            System.out.println("Iterasi: " + nInstances);
+            //System.out.println("Iterasi: " + nInstances);
             min = Double.MAX_VALUE;
             idi = -1;
             idj = -1;
@@ -96,7 +99,7 @@ public class MyAgnes extends AbstractClusterer {
                         temp = findFurthestDistance(clusterID.get(i), clusterID.get(j));
                     }
                     
-                    System.out.println("Min: " + min + " temp: " + temp);
+                    //System.out.println("Min: " + min + " temp: " + temp);
                     
                     if (temp < min) {
                         min = temp;
@@ -106,21 +109,31 @@ public class MyAgnes extends AbstractClusterer {
                 }
             }
             //TODO: combine closest pair
-            System.out.println("idi: " + idi + " idj: " + idj);
+            //System.out.println("idi: " + idi + " idj: " + idj);
             if (idi > -1) {
+                //System.out.print(clusterID.get(idi));
+                //System.out.println(clusterID.get(idj));
                 for (int i = 0; i < clusterID.get(idj).size(); i++) {
                     clusterID.get(idi).add(clusterID.get(idj).get(i));
                 }
                 clusterID.remove(idj);
             }
+            //System.out.println(clusterID.get(idi));
             nInstances--;
+            hierarchy.add(new ArrayList<ArrayList<Integer>>());
+            for (int i = 0; i < clusterID.size(); i++) {
+                hierarchy.get(m_instances.numInstances()-nInstances).add(new ArrayList<Integer>());
+                for (int j = 0; j < clusterID.get(i).size(); j++) {
+                    hierarchy.get(m_instances.numInstances()-nInstances).get(i).add(clusterID.get(i).get(j));
+                }
+            }
         }
         
         //Assign clusters
         clusters = new int[m_instances.numInstances()];
         for (int i = 0; i < clusterID.size(); i++) {
             for (int j = 0; j < clusterID.get(i).size(); j++) {
-                System.out.println(clusterID.get(i).get(j));
+                //System.out.println(clusterID.get(i).get(j));
                 clusters[clusterID.get(i).get(j)] = i;
                 
             }
@@ -196,6 +209,12 @@ public class MyAgnes extends AbstractClusterer {
     }
     
     public void print() {
+        for (int i = 0; i < hierarchy.size(); i++) {
+            for (int j = 0; j < hierarchy.get(i).size(); j++) {
+                System.out.print(hierarchy.get(i).get(j));
+            }
+            System.out.println();
+        }
         for (int i = 0; i < clusterID.size(); i++) {
             System.out.println("Cluster: " + i);
             for (int j = 0; j < clusterID.get(i).size(); j++) {

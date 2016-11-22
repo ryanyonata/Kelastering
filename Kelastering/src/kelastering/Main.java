@@ -34,14 +34,14 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         Instances trainset;
         ClusterEvaluation eval;
-        String path = "D:\\Kuliah\\Semester VII\\ML\\Kelastering\\Kelastering\\resources\\weather.nominal.arff";
+        String path = "C:\\Users\\User\\Documents\\Tugas\\Kelastering\\Kelastering\\resources\\weather.nominal.arff";
         BufferedReader data = new BufferedReader(new FileReader(path));
         trainset = new Instances(data);
         MyAgnes wekaKmeans = new MyAgnes();
         //wekaKmeans.setSeed(3);
         //wekaKmeans.setPreserveInstancesOrder(true);
         wekaKmeans.setNumClusters(2);
-        wekaKmeans.setLinkType(COMPLETE);
+        wekaKmeans.setLinkType(SINGLE);
         wekaKmeans.buildClusterer(trainset);
         wekaKmeans.print();
         //eval = new ClusterEvaluation();
