@@ -35,14 +35,14 @@ public class Main {
         String path = "D:\\Kuliah\\Semester VII\\ML\\Kelastering\\Kelastering\\resources\\weather.nominal.arff";
         BufferedReader data = new BufferedReader(new FileReader(path));
         trainset = new Instances(data);
-        MyKMeans wekaKmeans = new MyKMeans();
-        wekaKmeans.setSeed(3);
+        MyAgnes wekaKmeans = new MyAgnes(2,0,trainset);
+        //wekaKmeans.setSeed(3);
         //wekaKmeans.setPreserveInstancesOrder(true);
-        wekaKmeans.setNumClusters(2);
-        wekaKmeans.buildClusterer(trainset);
-        eval = new ClusterEvaluation();
-        eval.setClusterer(wekaKmeans);
-        eval.evaluateClusterer(trainset);
+        //wekaKmeans.setNumClusters(2);
+        //wekaKmeans.buildClusterer(trainset);
+        //eval = new ClusterEvaluation();
+        //eval.setClusterer(wekaKmeans);
+        //eval.evaluateClusterer(trainset);
         
         /*
         HierarchicalClusterer wekaAgnes = new HierarchicalClusterer();
@@ -53,7 +53,7 @@ public class Main {
         eval.evaluateClusterer(trainset);
         */
 
-        System.out.println("Cluster Evaluation: "+eval.clusterResultsToString());
+        //System.out.println("Cluster Evaluation: "+eval.clusterResultsToString());
        
     }
 }
