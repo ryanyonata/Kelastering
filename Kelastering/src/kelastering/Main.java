@@ -35,9 +35,9 @@ public class Main {
         String path = "D:\\Kuliah\\Semester VII\\ML\\Kelastering\\Kelastering\\resources\\weather.nominal.arff";
         BufferedReader data = new BufferedReader(new FileReader(path));
         trainset = new Instances(data);
-        SimpleKMeans wekaKmeans = new SimpleKMeans();
+        MyKMeans wekaKmeans = new MyKMeans();
         wekaKmeans.setSeed(3);
-        wekaKmeans.setPreserveInstancesOrder(true);
+        //wekaKmeans.setPreserveInstancesOrder(true);
         wekaKmeans.setNumClusters(2);
         wekaKmeans.buildClusterer(trainset);
         eval = new ClusterEvaluation();

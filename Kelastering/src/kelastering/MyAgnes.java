@@ -6,6 +6,7 @@
 package kelastering;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Vector;
 import weka.clusterers.AbstractClusterer;
 import weka.core.EuclideanDistance;
@@ -24,8 +25,11 @@ public class MyAgnes extends AbstractClusterer {
     Instances m_instances;
     int m_clusters = 2;
     int m_linkType = SINGLE;
-    ArrayList<ArrayList<Double>> distanceMatrix = new ArrayList<>();
+    HashMap<ArrayList<Integer>,Double> distanceMatrix = new HashMap<>();
+    ArrayList<ArrayList<Instance>> clusters = new ArrayList<>();
+    //ArrayList<ArrayList<Double>> distanceMatrix = new ArrayList<>();
     EuclideanDistance distanceCounter;
+    //TO DO: Struktur data untuk hirarki
 
     public MyAgnes (int clusters, int linkType, Instances data) throws Exception {
         m_clusters = clusters;
@@ -39,15 +43,17 @@ public class MyAgnes extends AbstractClusterer {
         int nInstances = m_instances.numInstances();
         if (nInstances == 0)
             return;
-        Vector<Integer> [] clusterID = new Vector[m_instances.numInstances()];
+        
+        ArrayList<ArrayList<Integer>> clusterID = new ArrayList<>();
         for (int i = 0; i < nInstances; i++) {
-            clusterID[i] = new Vector<Integer>();
-            clusterID[i].add(i);
+            clusterID.add(i, new ArrayList<Integer>());
         }
+        
         while (nInstances > m_clusters) {
-            for (int i = 0; i < clusterID.length-1; i++) {
-                for (int j = i+1; j < clusterID.length; j++) {
+            for (int i = 0; i < clusterID.size() - 1; i++) {
+                for (int j = i+1; j < clusterID.size(); j++) {
                     //TODO: find closest clusters
+                    
                 }
             }
             //ato gimana caranya make fungsi yg udah dibuat. hahahah
@@ -104,15 +110,20 @@ public class MyAgnes extends AbstractClusterer {
         
         for (int i = 0; i < clusters.size()-1; i++) {
             for (int j = i+1; j < clusters.size(); j++) {
+                ArrayList<Integer> arr = new ArrayList<>();
+                arr.set(0, i);
+                arr.set(1, j);
                 double newDistance;
                 if (m_linkType == 0) {
                     newDistance = findClosestDistance(clusters.get(i),clusters.get(j));
                 } else {
                     newDistance = findFurthestDistance(clusters.get(i),clusters.get(j));
                 } 
-                distanceMatrix.get(i).set(j,newDistance);
+                distanceMatrix.put(arr,newDistance);
             }
         }
     }
+    
+    
     
 }
