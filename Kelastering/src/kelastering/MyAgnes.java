@@ -150,7 +150,7 @@ public class MyAgnes extends AbstractClusterer {
         ArrayList<Double> calculatedDistances = new ArrayList<>();
         
         if ((cluster1.size() == 0) || (cluster2.size() == 0)) {
-            return 0;
+            return Double.MAX_VALUE;
         }
         
         for (Integer a : cluster1) {
@@ -172,6 +172,10 @@ public class MyAgnes extends AbstractClusterer {
     
     public double findFurthestDistance(ArrayList<Integer> cluster1, ArrayList<Integer> cluster2) {
         ArrayList<Double> calculatedDistances = new ArrayList<>();
+        
+        if ((cluster1.size() == 0) || (cluster2.size() == 0)) {
+            return Double.MAX_VALUE;
+        }
         
         for (Integer a : cluster1) {
             for (Integer b: cluster2) {
