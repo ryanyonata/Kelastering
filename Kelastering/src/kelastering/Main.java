@@ -9,7 +9,6 @@ package kelastering;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.Scanner;
-import kelastering.Model.WekaAccessor;
 import weka.classifiers.Classifier;
 import weka.classifiers.Evaluation;
 import weka.classifiers.trees.J48;
