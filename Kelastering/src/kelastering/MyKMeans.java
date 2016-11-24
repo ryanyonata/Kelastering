@@ -233,15 +233,8 @@ public class MyKMeans extends RandomizableClusterer {
             maxWidth = "missing".length() + 1;
         }
 
-
-
         StringBuffer temp = new StringBuffer();
-        //    String naString = "N/A";
 
-
-    /*    for (int i = 0; i < maxWidth+2; i++) {
-          naString += " ";
-          } */
         temp.append("\nkMeans\n======\n");
         temp.append("\nNumber of iterations: " + iterations+"\n");
 
@@ -256,9 +249,6 @@ public class MyKMeans extends RandomizableClusterer {
 
         temp.append("\n");
         temp.append(pad("Attribute", " ", maxAttWidth - "Attribute".length(), false));
-
-
-//        temp.append(pad("Full Data", " ", maxWidth + 1 - "Full Data".length(), true));
 
         // cluster numbers
         for (int i = 0; i < numCluster; i++) {
@@ -290,25 +280,6 @@ public class MyKMeans extends RandomizableClusterer {
 
             String strVal;
             String valMeanMode;
-            // full data
-//            if (centroids.attribute(i).isNominal()) {
-//                if (m_FullMeansOrMediansOrModes[i] == -1) { // missing
-//                    valMeanMode = pad("missing", " ", maxWidth + 1 - "missing".length(), true);
-//                } else {
-//                    valMeanMode =
-//                            pad((strVal = centroids.attribute(i).value((int)m_FullMeansOrMediansOrModes[i])),
-//                                    " ", maxWidth + 1 - strVal.length(), true);
-//                }
-//            } else {
-//                if (Double.isNaN(m_FullMeansOrMediansOrModes[i])) {
-//                    valMeanMode = pad("missing", " ", maxWidth + 1 - "missing".length(), true);
-//                } else {
-//                    valMeanMode =  pad((strVal = Utils.doubleToString(m_FullMeansOrMediansOrModes[i],
-//                            maxWidth,4).trim()),
-//                            " ", maxWidth + 1 - strVal.length(), true);
-//                }
-//            }
-//            temp.append(valMeanMode);
 
             for (int j = 0; j < numCluster; j++) {
                 if (centroids.attribute(i).isNominal()) {

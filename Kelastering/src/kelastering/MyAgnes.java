@@ -26,12 +26,10 @@ public class MyAgnes extends AbstractClusterer {
     Instances m_instances;
     int m_clusters = 2;
     int m_linkType = SINGLE;
-    HashMap<ArrayList<Integer>,Double> distanceMatrix = new HashMap<>();
     int[] clusters;
     ArrayList<ArrayList<Integer>> clusterID = new ArrayList<>();
     ArrayList<ArrayList<ArrayList<Integer>>> hierarchy = new ArrayList<>();
     protected DistanceFunction m_DistanceFunction = new EuclideanDistance();
-    //TO DO: Struktur data untuk hirarki
 
     public MyAgnes () throws Exception {
         m_clusters = 2;
@@ -82,24 +80,11 @@ public class MyAgnes extends AbstractClusterer {
             idj = -1;
             for (int i = 0; i < clusterID.size()-1; i++) {
                 for (int j = i+1; j < clusterID.size(); j++) {
-                    //TODO: find closest clusters
-//                    for (int k = 0; k < clusterID.get(i).size(); k++) {
-//                        for (int l = 0; l < clusterID.get(j).size(); l++) {
-//                            temp = m_DistanceFunction.distance(m_instances.instance(clusterID.get(i).get(k)), m_instances.instance(clusterID.get(j).get(l)));
-//                            if (temp < min) {
-//                                min = temp;
-//                                idi = i;
-//                                idj = j;
-//                            }
-//                        }
-//                    }
                     if (m_linkType == SINGLE) {
                         temp = findClosestDistance(clusterID.get(i), clusterID.get(j));
                     } else {
                         temp = findFurthestDistance(clusterID.get(i), clusterID.get(j));
                     }
-                    
-                    //System.out.println("Min: " + min + " temp: " + temp);
                     
                     if (temp < min) {
                         min = temp;
@@ -108,17 +93,13 @@ public class MyAgnes extends AbstractClusterer {
                     }
                 }
             }
-            //TODO: combine closest pair
-            //System.out.println("idi: " + idi + " idj: " + idj);
+
             if (idi > -1) {
-                //System.out.print(clusterID.get(idi));
-                //System.out.println(clusterID.get(idj));
                 for (int i = 0; i < clusterID.get(idj).size(); i++) {
                     clusterID.get(idi).add(clusterID.get(idj).get(i));
                 }
                 clusterID.remove(idj);
             }
-            //System.out.println(clusterID.get(idi));
             nInstances--;
             hierarchy.add(new ArrayList<ArrayList<Integer>>());
             for (int i = 0; i < clusterID.size(); i++) {
@@ -133,9 +114,7 @@ public class MyAgnes extends AbstractClusterer {
         clusters = new int[m_instances.numInstances()];
         for (int i = 0; i < clusterID.size(); i++) {
             for (int j = 0; j < clusterID.get(i).size(); j++) {
-                //System.out.println(clusterID.get(i).get(j));
                 clusters[clusterID.get(i).get(j)] = i;
-                
             }
         }
     }
@@ -193,25 +172,6 @@ public class MyAgnes extends AbstractClusterer {
         return max;
     }
     
-    public void updateDistanceMatrix(ArrayList<ArrayList<Integer>> clusters) {
-        distanceMatrix.clear();
-        
-        for (int i = 0; i < clusters.size()-1; i++) {
-            for (int j = i+1; j < clusters.size(); j++) {
-                ArrayList<Integer> arr = new ArrayList<>();
-                arr.set(0, i);
-                arr.set(1, j);
-                double newDistance;
-                if (m_linkType == 0) {
-                    newDistance = findClosestDistance(clusters.get(i),clusters.get(j));
-                } else {
-                    newDistance = findFurthestDistance(clusters.get(i),clusters.get(j));
-                } 
-                distanceMatrix.put(arr,newDistance);
-            }
-        }
-    }
-    
     public void print() {
         for (int i = 0; i < hierarchy.size(); i++) {
             for (int j = 0; j < hierarchy.get(i).size(); j++) {
@@ -226,6 +186,13 @@ public class MyAgnes extends AbstractClusterer {
             }
             System.out.println();
         }
+        
+        System.out.println();
+        for (int i = 0; i < clusterID.size(); i++) {
+            System.out.print(i + "     ");
+            double percentage = (clusterID.get(i).size() * 100)/m_instances.numInstances();
+            System.out.print(clusterID.get(i).size() + "( "+ percentage + "%)");
+            System.out.println();
+        }
     }
-    
 }

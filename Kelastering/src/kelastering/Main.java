@@ -40,65 +40,18 @@ public class Main {
         int linktype;
         int jumlahCluster;
         int initSeed;
-        //String path;
+        int maxIter;
         
         do {
             
             System.out.println("Menu:");
-            System.out.println("1. WEKA K-Means Clustering");
-            System.out.println("2. WEKA Hierarchical Clustering");
-            System.out.println("3. MyKMeans");
-            System.out.println("4. MyAgnes");
-            System.out.println("5. Keluar");
+            System.out.println("1. MyKMeans");
+            System.out.println("2. MyAgnes");
+            System.out.println("3. Keluar");
             System.out.print("Masukkan pilihan: ");
             Scanner sc = new Scanner(System.in);
             pilihan = sc.nextInt();
             if (pilihan == 1) {
-                System.out.println();
-                System.out.println("===== WEKA Simple KMeans =====");
-                System.out.print("Masukkan lokasi file: ");
-                path = sc.next();
-                System.out.print("Masukkan jumlah cluster: ");
-                jumlahCluster = sc.nextInt();
-                System.out.print("Masukkan jumlah seed awal: ");
-                initSeed = sc.nextInt();
-                SimpleKMeans wekaKmeans = new SimpleKMeans();
-                wekaKmeans.setSeed(initSeed);
-                wekaKmeans.setPreserveInstancesOrder(true);
-                wekaKmeans.setNumClusters(jumlahCluster);
-                BufferedReader data = new BufferedReader(new FileReader(path));
-                trainset = new Instances(data);
-                wekaKmeans.buildClusterer(trainset);
-                eval = new ClusterEvaluation();
-                eval.setClusterer(wekaKmeans);
-                eval.evaluateClusterer(trainset);
-                System.out.println("Cluster Evaluation: "+eval.clusterResultsToString());
-                System.out.println();
-            } else if (pilihan == 2) {
-                System.out.println();
-                System.out.println("===== WEKA Hierarchical Clustering =====");
-                System.out.print("Masukkan lokasi file: ");
-                path = sc.next();
-                System.out.print("Masukkan jumlah cluster: ");
-                jumlahCluster = sc.nextInt();
-                System.out.println();
-                /*System.out.println("Jenis linktype");
-                System.out.println("1. SINGLE");
-                System.out.println("2. COMPLETE");
-                System.out.print("Masukkan jenis linktype: ");
-                linktype = sc.nextInt();*/
-                BufferedReader data = new BufferedReader(new FileReader(path));
-                trainset = new Instances(data);
-                HierarchicalClusterer wekaAgnes = new HierarchicalClusterer();
-                //wekaAgnes.setLinkType(SINGLE);
-                wekaAgnes.setNumClusters(jumlahCluster);
-                wekaAgnes.buildClusterer(trainset);
-                eval = new ClusterEvaluation();
-                eval.setClusterer(wekaAgnes);
-                eval.evaluateClusterer(trainset);
-                System.out.println("Cluster Evaluation: "+eval.clusterResultsToString());
-                System.out.println();
-            } else if (pilihan == 3) {
                 System.out.println();
                 System.out.println("===== MyKMeans =====");
                 System.out.print("Masukkan lokasi file: ");
@@ -107,9 +60,12 @@ public class Main {
                 jumlahCluster = sc.nextInt();
                 System.out.print("Masukkan jumlah seed awal: ");
                 initSeed = sc.nextInt();
+                System.out.print("Masukkan max iterasi: ");
+                maxIter = sc.nextInt();
                 MyKMeans myKmeans = new MyKMeans();
                 myKmeans.setSeed(initSeed);
                 myKmeans.setNumClusters(jumlahCluster);
+                myKmeans.setMaxIterations(maxIter);
                 BufferedReader data = new BufferedReader(new FileReader(path));
                 trainset = new Instances(data);
                 myKmeans.buildClusterer(trainset);
@@ -118,7 +74,7 @@ public class Main {
                 eval.evaluateClusterer(trainset);
                 System.out.println("Cluster Evaluation: "+eval.clusterResultsToString());
                 System.out.println();
-            } else if (pilihan == 4) {
+            } else if (pilihan == 2) {
                 System.out.println();
                 System.out.println("===== WEKA Hierarchical Clustering =====");
                 System.out.print("Masukkan lokasi file: ");
@@ -139,38 +95,11 @@ public class Main {
                 myAgnes.buildClusterer(trainset);
                 myAgnes.print();
                 System.out.println();
-            } else if ((pilihan < 1) && (pilihan > 5)){
+            } else if ((pilihan < 1) && (pilihan > 3)){
                 System.out.println("Masukan salah. Coba lagi!");
                 System.out.print("Masukkan pilihan: ");
                 pilihan = sc.nextInt();
             }
-        } while (pilihan != 5);
-        
-        
-        //String path;
-        /*BufferedReader data = new BufferedReader(new FileReader(path));
-        trainset = new Instances(data);
-        MyAgnes wekaKmeans = new MyAgnes();
-        wekaKmeans.setSeed(3);
-        wekaKmeans.setPreserveInstancesOrder(true);
-        wekaKmeans.setNumClusters(5);
-        wekaKmeans.setLinkType(COMPLETE);
-        wekaKmeans.buildClusterer(trainset);
-        wekaKmeans.print();*/
-        //eval = new ClusterEvaluation();
-        //eval.setClusterer(wekaKmeans);
-        //eval.evaluateClusterer(trainset);
-        
-        /*
-        HierarchicalClusterer wekaAgnes = new HierarchicalClusterer();
-        wekaAgnes.setNumClusters(2);
-        wekaAgnes.buildClusterer(trainset);
-        eval = new ClusterEvaluation();
-        eval.setClusterer(wekaAgnes);
-        eval.evaluateClusterer(trainset);
-        */
-
-        //System.out.println("Cluster Evaluation: "+eval.clusterResultsToString());
-       
+        } while (pilihan != 3);
     }
 }
